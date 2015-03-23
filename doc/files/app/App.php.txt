@@ -1,0 +1,76 @@
+<?php
+use Core\Config;
+
+use Core\Database\MysqlDatabase;
+/**
+ * Classe App
+ * Singleton qui est relié à toute l'application
+ */
+class App{
+
+	/**
+	 * Le titre (title) de la page HTML courante
+	 * @var string
+	 */
+	public $title = 'Tuto Graf';
+
+	/**
+	 * Instance de la connexion à la base de données
+	 * @var \Core\Database\MysqlDatabase
+	 */
+	private $db_instance;
+
+	/**
+	 * Instance de la classe App
+	 * @var App
+	 */
+	private static $_instance;
+	
+	/**
+	 * Cette fonction permet de créer une instance unique de la classe App (Singleton)
+	 * @return App Instance de la classe App
+	 */
+	public static function getInstance(){
+		if (self::$_instance === null){
+			self::$_instance = new App();
+		}
+		return self::$_instance;
+	}
+
+	/**
+	 * Cette fonction permet de charger dans l'application 
+	 * les différents autoloader et les active
+	 * @return [type] Toutes les classes dont à besoin l'application
+	 */
+	public static function load(){
+		session_start();
+		require ROOT . '/app/Autoloader.php';
+		App\Autoloader::register();
+		require ROOT . '/core/Autoloader.php';
+		Core\Autoloader::register();
+	}
+
+	/**
+	 * Cette fonction crée une instance du model appelé
+	 * @param  string $name Le nom du model
+	 * @return \App\Table       Instance du model passé en paramètre
+	 */
+	public function getTable($name){
+		$class_name = '\\App\\Table\\' . ucfirst($name) . 'Table';
+		return new $class_name($this->getDb());
+	}
+
+	/**
+	 * Cette fonction permet de créer une instance 
+	 * unique de la connexion à la base de données
+	 * @return \Core\Database\MysqlDatabase Instance de la connexion à la base de données
+	 */
+	public function getDb(){
+		$config = Config::getInstance(ROOT . '/config/config.php');
+		if ($this->db_instance === null){
+			$this->db_instance = new MysqlDatabase($config->get('db_name'), $config->get('db_user'), $config->get('db_pass'), $config->get('db_host'));
+		}
+		return $this->db_instance;
+	}
+
+}

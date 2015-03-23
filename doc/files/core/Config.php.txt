@@ -1,0 +1,60 @@
+<?php
+namespace Core;
+
+/**
+* class Config
+* 
+*/
+class Config {
+	
+	/**
+	 * Tableau contenant les paramètres retournés par le fichier de configuration
+	 * @var array
+	 */
+	private $settings = [];
+
+	/**
+	 * Instance de la classe Config
+	 * @var Core\Config
+	 */
+	private static $_instance;
+
+	/**
+	 * Le chemin du fichier de configuration
+	 * @var string
+	 */
+	private $file; // ROOT . '/chemin/du/fichier'
+
+	/**
+	 * Cette fonction permet de créer une instance unique de la classe Config (Singleton)
+	 * @param  string $file Le chemin du fichier de configuration
+	 * @return Core\Config       Instance de la classe Config
+	 */
+	public static function getInstance($file){
+		if (is_null(self::$_instance)){
+			self::$_instance = new Config($file);
+		}
+		return self::$_instance;
+	}
+	
+	/**
+	 * [__construct description]
+	 * @param string $file Le fichier contenant les accès à la base de données
+	 */
+	public function __construct($file){
+		$this->settings = require($file);
+	}
+
+	/**
+	 * [get description]
+	 * @param  string $key La clé du paramètre attendu
+	 * @return string      La valeur du paramètre attendu
+	 */
+	public function get($key){
+		if (!isset($this->settings[$key])){
+			return null;
+		}
+		return $this->settings[$key];
+	}
+
+}

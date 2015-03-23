@@ -1,0 +1,44 @@
+<?php
+namespace App\Controller;
+
+use Core\Controller\Controller;
+
+use \App;
+
+/**
+* class AppController
+* Le controller général de l'application
+*/
+class AppController extends Controller{
+
+	/**
+	 * Le nom du template à utiliser
+	 * @var string
+	 */
+	protected $template = 'default';
+	
+	/**
+	 * [__construct description]
+	 */
+	function __construct(){
+		$this->viewPath = ROOT . '/app/Views/';
+	}
+
+	/**
+	 * Cette fonction crée une instance du model appelé
+	 * @param  string $model_name Le nom du model
+	 * @return \App\Table             Instance du model passé en paramètre
+	 */
+	public function loadModel($model_name){
+		$this->$model_name = App::getInstance()->getTable($model_name);
+	}
+
+	/**
+	 * Cette fonction permet de modifier le titre (title) de la page HTML courante
+	 * @param string $title Le titre (title) de la page HTML courante
+	 */
+	public function setTitle($title){
+		App::getInstance()->title = $title;
+	}
+
+}
