@@ -8,6 +8,7 @@ use Core\Database\MysqlDatabase;
 class App{
 
 	public $title = 'Tuto Graf';
+	public $header = '';
 	private $db_instance;
 	private static $_instance;
 	

@@ -1,2 +1,3 @@
 # Ignorer le bootstrap twitter
 public/css/bootstrap/
+/nbproject/private/

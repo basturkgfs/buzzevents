@@ -24,4 +24,8 @@ class AppController extends Controller{
 		App::getInstance()->title = $title;
 	}
 
+	public function setHeader($header){
+		App::getInstance()->header = $header;
+	}
+
 }

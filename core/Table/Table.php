@@ -75,15 +75,17 @@ class Table{
 	 * @param  array $fields Les champs à modifier dans l'élément en clé et en valeur leur contenu
 	 * @return boolean       Le résultat de la requête
 	 */
-	public function update($fields){
-		$sql_parts = [];
-		$attributes = [];
+	public function update($id,$fields){
+        
+        $sql_parts =[];
+        $attribute = [];
 		foreach ($fields as $k => $v) {
-			$sql_parts[] = "$k = ?";
-			$attributes[] = $v;
+            $sql_parts[] = "$k = ?" ; 
+            $attribute[] = $v;
 		}
-		$sql_part = implode(', ',$sql_parts);
-		return $this->query("UPDATE {$this->table} SET {$sql_part} WHERE id = ? AND user_id = ?", $attributes, true);
+        $attribute[] = $id;
+        $sql_part = implode(' ,', $sql_parts);
+        return $this->query("UPDATE {$this->table} SET $sql_part WHERE id = ?", $attribute, TRUE) ;
 	}
 
 	/**

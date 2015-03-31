@@ -14,6 +14,7 @@ class EventsController extends AppController{
 	}
 
 	public function index(){
+		$this->setHeader('Administrer les évènements');
 		$events = $this->Event->findByUser($_SESSION['auth']);
 		$this->render('admin.events.index', compact('events'));
 	}
@@ -34,6 +35,7 @@ class EventsController extends AppController{
 				return $this->index();
 			}
 		}
+		$this->setHeader('Nouvel évènement');
 		$this->loadModel('EventType');
 		$types = $this->EventType->extract('id', 'libelle_type_event');
 		$form = new BootstrapForm();
@@ -55,6 +57,7 @@ class EventsController extends AppController{
 				return $this->index();
 			}
 		}
+		$this->setHeader('Editer un évènements');
 		$this->loadModel('EventType');
 		$types = $this->EventType->extract('id', 'libelle_type_event');
 		$event = $this->Event->findWithType($_GET['id']);

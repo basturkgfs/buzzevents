@@ -1,26 +1,33 @@
-<h1>Administrer les catégories des billets</h1>
-
+<h1>Administrer les cat&eacute;gories</h1>
 <p>
-	<a href="?p=admin.categories.add" class="btn btn-success">Ajouter une catégorie</a>
+    <a href="?p=admin.categories.add" class="btn btn-success" >Ajouter</a>
 </p>
-
-<table class="table table-bordered table-hover">
-	<thead>
-		<td>ID</td>
-		<td>Catégorie</td>
-		<td>Actions</td>
-	</thead>
-	<?php foreach ($categories as $categorie): ?>
-	<tr>
-		<td><?= $categorie->id ?></td>
-		<td><?= $categorie->libelle_categorie ?></td>
-		<td>
-			<a href="index.php?p=admin.categories.edit&id=<?= $categorie->id ?>">Editer</a>
-			<form action="?p=admin.categories.delete" method="post" style="display: inline;">
-				<input type="hidden" name="id" value="<?= $categorie->id; ?>">
-				<button class="btn btn-danger">Supprimer</button>
-			</form>
-		</td>
-	</tr>
-	<?php endforeach ?>
+<table class="table">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Cat&eacute;gories</td>
+            <td>Prix</td>
+            <td>Ev&egrave;nements</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($items as $category): ?>
+        <tr>
+            <td><?= $category->id ; ?></td>
+            <td><?= $category->libelle_categorie ; ?></td>
+            <td><?= $category->prix ; ?></td>
+            <td><?= $category->evenements ; ?></td>
+            <td>
+                <a class="btn btn-primary" href="?p=admin.categories.edit&id=<?= $category->id ; ?>">Editer</a>
+                <form action="?p=admin.categories.delete" style="display: inline" method="post">
+                    <input type="hidden" name="id" value="<?= $category->id;  ?>">
+                    <button class="btn btn-danger">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+      <?php  endforeach; ?>
+    </tbody>
 </table>
+

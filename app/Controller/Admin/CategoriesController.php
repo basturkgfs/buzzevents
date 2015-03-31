@@ -1,54 +1,81 @@
 <?php
-namespace App\Controller\Admin;
 
-use Core\HTML\BootstrapForm;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
-* 
-*/
+ * Description of CategoriesController
+ *
+ * @author STEPHANE
+ */
+namespace App\Controller\Admin;
+
+use \Core\HTML\BootstrapForm;
+
 class CategoriesController extends AppController{
-	
-	public function __construct(){
-		parent::__construct();
-		$this->loadModel('Category');
-	}
 
-	public function index(){
-		$categories = $this->Category->all();
-		$this->render('admin.categories.index', compact('categories'));
-	}
-
-	public function add(){
-		if (!empty($_POST)) {
-			$result =  $this->Category->create([
-				'libelle_categorie' => $_POST['libelle_categorie'],
-				'prix' => $_POST['prix']
-				// 'event_id' => 3
-			]);
-
-			if ($result){
-				return $this->index();
-			}
+    public function __construct() {
+        parent::__construct();
+        $this->loadModel('Category');
+    }
+    public function index() {
+        $items = $this->Category->all();
+        $this->render('admin.categories.index', compact('items')); 
+    }
+    
+    public function add() {
+        $estEntier = TRUE;
+        if(!empty($_POST)){
+            if($this->estEntier( $_POST['prix'])){
+            $result = $this->Category->create([
+                'libelle_categorie' => $_POST['libelle_categorie'],
+                'prix' => $_POST['prix'],
+                'event_id' => $_POST['event_id']
+            ]);
+               return $this->index();
+            }  else {
+                $estEntier = FALSE;
+            }  
+        }
+        $items = $this->Category->extract('event_id','evenements');
+        $form = new BootstrapForm($_POST);
+        $this->render('admin.categories.edit', compact('form', 'items','estEntier'));
+    }
+    
+    public function edit() {
+        if(!empty($_POST)){
+               $result = $this->Category->update($_GET['id'],[
+                'libelle_categorie' => $_POST['libelle_categorie'],
+                'prix' => $_POST['prix'],
+                'event_id' => $_POST['event_id']
+            ]);
+//            var_dump($result);
+		if ($result) {
+                    return $this->index();
 		}
-		$form = new BootstrapForm;
-		$this->render('admin.categories.add', compact('form'));
-	}
-
-	public function edit(){
-		if (!empty($_POST)) {
-			$result =  $this->Event->update([
-				'libelle_categorie' => $_POST['libelle_categorie'],
-				'prix' => $_POST['prix'], 
-				// 'event_id' => 3
-			]);
-		}
-		$category = $this->Category->findWithEvent($_GET['id']);
-		$form = new BootstrapForm($category);
-		$this->render('admin.categories.add', compact('form'));
-	}
-
-	public function delete(){
-
-	}
-
+        }
+        $category = $this->Category->find($_GET['id']);
+        $items = $this->Category->extract('event_id','evenements');
+        $form = new BootstrapForm($category);
+        $this->render('admin.categories.edit', compact('items','form','category'));
+    }
+    
+    public function delete() {
+        if(!empty($_POST)){
+           $result =  $this->Category->delete($_POST['id']);
+            if ($result){
+                return $this->index();
+            }
+        }
+    }
+    
+    public function estEntier($val) {
+        if (((float)$val) > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
 }

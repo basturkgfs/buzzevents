@@ -19,7 +19,9 @@ class AppController extends \App\Controller\AppController{
 		$auth = new DBAuth($app->getDb());
 		if (!$auth->logged()){
 			// $this->forbidden();
-			header('Location: index.php?p=users.login');
+			if ($_GET['p'] != 'users.login'){
+				header('Location: index.php?p=users.login');
+			}
 		}
 	}
 

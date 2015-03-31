@@ -1,5 +1,0 @@
-{
-    "require-dev": {
-    }
-}
-"vendor/bin/phpdoc.bat" -d c:\wamp\www\Lab\BuzzEvents\ -t c:\wamp\www\Lab\BuzzEvents\doc\

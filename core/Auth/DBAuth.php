@@ -40,16 +40,17 @@ class DBAuth {
 	 * @return boolean           Retourne 'true' ou 'false' selon que la connexion ait réussie ou non
 	 */
 	public function login($params = array()){
-		$user = $this->db->prepare('SELECT * FROM users WHERE login = ?', [$params['username']], null, true);
+		var_dump([$params['username']]);
+		var_dump([$params['username']]);
+		var_dump([$params['username']]);
+		var_dump([$params['password']]);
+            $user = $this->db->prepare('SELECT * FROM users WHERE login = ?', [$params['username']], null, true);
+                             		
 		if ($user){
-			// if ($user->password === sha1($password)){
-			// 	$_SESSION['auth'] = $user->id;
-			// 	return true;
-			// }
-			if ($user->password === $params['password']){
+			 if ($user->password === sha1($params['password'])){
 				$_SESSION['auth'] = $user->id;
 				return true;
-			}
+                         }
 		}
 		return false;
 	}
@@ -60,10 +61,6 @@ class DBAuth {
 	 */
 	public function logged(){
 		return isset($_SESSION['auth']);
-	}
-
-	public function signup(){
-
 	}
 
 }
