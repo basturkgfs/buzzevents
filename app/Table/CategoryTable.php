@@ -22,11 +22,19 @@ class CategoryTable extends Table{
         
     public function all() {
         return $this->query(" 
-                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, event_id ,  `events`.nom AS evenements
+                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id ,  `events`.nom AS evenements
                 FROM {$this->table}
                 LEFT JOIN`events`
                     ON categories.event_id = `events`.id
                 ");/*ORDER BY categories.event_id ASC*/
     }
-    
-    }
+       public function findCategoryByEvent($id) {
+        return $this->query(" 
+                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id ,  `events`.nom AS evenements
+                FROM {$this->table}
+                LEFT JOIN `events`
+                    ON categories.event_id = `events`.id
+                WHERE event_id = ?
+		", [$id]);/*ORDER BY categories.event_id ASC*/
+    } 
+}

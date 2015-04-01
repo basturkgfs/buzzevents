@@ -7,34 +7,32 @@
  */
 
 /**
- * Description of CategoriesController
+ * Description of BilletsController
  *
  * @author STEPHANE
  */
 namespace App\Controller\Admin;
 
 use \Core\HTML\BootstrapForm;
-
-class CategoriesController extends AppController{
+class BilletsController extends AppController{
 
     public function __construct() {
         parent::__construct();
-        $this->loadModel('Category');
+        $this->loadModel('Billet');
     }
     public function index() {
-        $items = $this->Category->all();
-        $this->render('admin.categories.index', compact('items')); 
+        $items = $this->Billet->all();
+        $this->render('admin.billets.index', compact('items')); 
     }
     
     public function add() {
         $estEntier = TRUE;
         if(!empty($_POST)){
-            if(($this->estEntier($_POST['prix'], $_POST['nombre_place'] )) ){
+            if($this->estEntier( $_POST['prix'])){
             $result = $this->Category->create([
                 'libelle_categorie' => $_POST['libelle_categorie'],
                 'prix' => $_POST['prix'],
-                'event_id' => $_POST['event_id'],
-                'nombre_place' => $_POST['nombre_place']
+                'event_id' => $_POST['event_id']
             ]);
                return $this->index();
             }  else {
@@ -47,26 +45,21 @@ class CategoriesController extends AppController{
     }
     
     public function edit() {
-        $estEntier = TRUE;
         if(!empty($_POST)){
-            if(($this->estEntier($_POST['prix'], $_POST['nombre_place'] )) ){
-                $result = $this->Category->update($_GET['id'],[
+               $result = $this->Category->update($_GET['id'],[
                 'libelle_categorie' => $_POST['libelle_categorie'],
                 'prix' => $_POST['prix'],
-                'event_id' => $_POST['event_id'],
-                'nombre_place' => $_POST['nombre_place']
+                'event_id' => $_POST['event_id']
             ]);
+//            var_dump($result);
 		if ($result) {
                     return $this->index();
 		}
-            }  else {
-                $estEntier = FALSE;
-            } 
         }
         $category = $this->Category->find($_GET['id']);
         $items = $this->Category->extract('event_id','evenements');
         $form = new BootstrapForm($category);
-        $this->render('admin.categories.edit', compact('items','form','category','estEntier'));
+        $this->render('admin.categories.edit', compact('items','form','category'));
     }
     
     public function delete() {
@@ -78,19 +71,10 @@ class CategoriesController extends AppController{
         }
     }
     
-    public function estEntier() {
-        $nombreArguments = func_num_args();
-        $argument = func_get_args();
-        $i = 0;
-        while ($i <= $nombreArguments-1):
-            if (is_numeric($argument[$i])) {
-                $estentier = TRUE;
-            }  else {
-                $estentier = FALSE;
-                break;
-            }
-            $i++;
-        endwhile;
-        return $estentier;
+    public function estEntier($val) {
+        if (((float)$val) > 0) {
+            return TRUE;
+        }
+        return FALSE;
     }
 }
