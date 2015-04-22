@@ -22,7 +22,7 @@ class CategoryTable extends Table{
         
     public function all() {
         return $this->query(" 
-                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id ,  `events`.nom AS evenements
+                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id ,  {$this->table}.nombre_place , `events`.nom AS evenements
                 FROM {$this->table}
                 LEFT JOIN`events`
                     ON categories.event_id = `events`.id
@@ -30,11 +30,20 @@ class CategoryTable extends Table{
     }
        public function findCategoryByEvent($id) {
         return $this->query(" 
-                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id ,  `events`.nom AS evenements
+                SELECT {$this->table}.id, {$this->table}.libelle_categorie, {$this->table}.prix, {$this->table}.nombre_place, event_id,  {$this->table}.nombre_place ,  `events`.nom AS evenements
                 FROM {$this->table}
                 LEFT JOIN `events`
                     ON categories.event_id = `events`.id
                 WHERE event_id = ?
-		", [$id]);/*ORDER BY categories.event_id ASC*/
+		ORDER BY id ASC", [$id]);
     } 
+     public function numberOfCategoryByEvent($id) {
+        return $this->query(" 
+                SELECT COUNT(*) 
+                FROM {$this->table}
+                LEFT JOIN `events`
+                    ON categories.event_id = `events`.id
+                WHERE event_id = ?
+		", [$id]);
+    }
 }

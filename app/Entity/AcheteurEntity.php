@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of BilletEntity
+ * Description of categoryEntity
  *
  * @author STEPHANE
  */
@@ -15,7 +15,7 @@ namespace App\Entity;
 
 use \Core\Entity\Entity;
 
-class BilletEntity extends Entity{
+class AcheteurEntity extends Entity{
     
     public function getUrl() {
         return 'index.php?p=posts.category&id='. $this->id;

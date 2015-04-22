@@ -7,17 +7,16 @@
  */
 
 /**
- * Description of BilletEntity
+ * Description of AcheteurTable
  *
  * @author STEPHANE
  */
-namespace App\Entity;
+namespace App\Table;
 
-use \Core\Entity\Entity;
+use Core\Table\Table;
 
-class BilletEntity extends Entity{
+class BilletTable extends Table{
     
-    public function getUrl() {
-        return 'index.php?p=posts.category&id='. $this->id;
-    }
+    protected $table = 'billet';
+    
 }
